@@ -87,18 +87,17 @@ Pre-trained Classifier
 ├── 📂 src/
 │   ├── threshold_optimizer.py     # Core constrained optimization
 │   ├── fairness_metrics.py        # DP, EO, PP, calibration metrics
-│   ├── resource_constraints.py    # Hard budget constraint handlers
-│   └── evaluation.py              # Full evaluation pipeline
+│   └── __init__.py
 ├── 📂 notebooks/
 │   ├── 01_compas_baseline.ipynb
 │   ├── 02_threshold_optimization.ipynb
 │   ├── 03_robustness_analysis.ipynb
 │   └── 04_ablation_study.ipynb
 ├── 📂 data/
-│   └── README.md                  # How to obtain COMPAS dataset
+│   └── README.md
 ├── 📂 results/
-│   ├── 📂 figures/                # All paper figures
-│   └── 📂 tables/                 # LaTeX-ready result tables
+│   ├── 📂 figures/
+│   └── 📂 tables/
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -120,13 +119,10 @@ pip install -r requirements.txt
 from src.threshold_optimizer import FairnessThresholdOptimizer
 from src.fairness_metrics import demographic_parity_gap, equalized_odds_gap
 
-# Load your pre-trained model predictions
-# y_prob: predicted probabilities, sensitive_attr: protected group labels
-
 optimizer = FairnessThresholdOptimizer(
     fairness_metric="equalized_odds",
-    epsilon=0.05,           # max allowed fairness gap
-    budget=0.35,            # approve at most 35% of applicants
+    epsilon=0.05,       # max allowed fairness gap
+    budget=0.35,        # approve at most 35% of applicants
 )
 thresholds = optimizer.fit(y_prob, y_true, sensitive_attr)
 y_pred_fair = optimizer.predict(y_prob, sensitive_attr)
@@ -140,10 +136,10 @@ print(f"EO Gap: {equalized_odds_gap(y_pred_fair, y_true, sensitive_attr):.4f}")
 ## 🧩 Fairness Metrics Implemented
 
 | Metric | Definition | Formula |
-|--------|-----------|---------|
-| **Demographic Parity (DP)** | Equal positive rates across groups | `|P(Ŷ=1\|A=0) - P(Ŷ=1\|A=1)|` |
+|--------|-----------|---------| 
+| **Demographic Parity (DP)** | Equal positive rates across groups | `\|P(Ŷ=1\|A=0) - P(Ŷ=1\|A=1)\|` |
 | **Equalized Odds (EO)** | Equal TPR and FPR across groups | `max(ΔTPR, ΔFPR)` |
-| **Predictive Parity (PP)** | Equal precision across groups | `|PPV_A - PPV_B|` |
+| **Predictive Parity (PP)** | Equal precision across groups | `\|PPV_A - PPV_B\|` |
 | **Calibration** | Predicted probabilities match true rates | ECE per group |
 
 ---
@@ -152,7 +148,6 @@ print(f"EO Gap: {equalized_odds_gap(y_pred_fair, y_true, sensitive_attr):.4f}")
 
 **COMPAS Recidivism Dataset** (ProPublica):
 ```bash
-# Download from ProPublica GitHub
 wget https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv -P data/
 ```
 See `data/README.md` for preprocessing steps.
@@ -186,7 +181,7 @@ This builds on and extends:
 ## 🙋 Author
 
 **Amit Kalita**
-B.Tech CSE, BIT Mesra (Dibrugarh Campus)
+B.Tech CSE (8th Semester), Dibrugarh University
 [GitHub](https://github.com/Amit2004k) | [arXiv](https://arxiv.org/abs/2602.22560)
 
 > 📌 *Part of a series of published ML research repos. See also: [Breast Cancer Classification](https://github.com/Amit2004k/decision-aware-breast-cancer-classification), DDI Prediction, Alzheimer's Detection, Fraud Detection, and more.*
